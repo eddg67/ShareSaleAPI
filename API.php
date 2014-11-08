@@ -25,6 +25,7 @@ class API {
         if(!empty($argv[1])){
             switch($argv[1]){
                case "load":
+                   echo "loading process";
                    $this->loadProducts();
                  break;
             }
