@@ -5,7 +5,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+function my_autoloader($class)
+{
+    $filename =  str_replace('\\', '/', $class) . '.php';
+    include($filename);
+}
+spl_autoload_register('my_autoloader');
 /**
  * Description of API
  *
