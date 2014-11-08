@@ -6,12 +6,6 @@
  * and open the template in the editor.
  */
 
-function my_autoloader($class)
-{
-    $filename =  '../' . str_replace('\\', '/', $class) . '.php';
-    include($filename);
-}
-spl_autoload_register('my_autoloader');
-
+include("./API.php");
 $api = new API();
-
+$api->loadProducts();
