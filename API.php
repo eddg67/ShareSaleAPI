@@ -5,12 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-function my_autoloader($class)
-{
-    $filename =  str_replace('\\', '/', $class) . '.php';
-    include($filename);
-}
-spl_autoload_register('my_autoloader');
+
 /**
  * Description of API
  *
@@ -37,10 +32,24 @@ class API {
         }
     }
     
+    public function getMerchants($status = "online")
+      {
+        
+        return $this->createRequest("merchantStatus", "programStatus={$status}");
+        
+      }
+    
     public function loadProducts()
     {
-        foreach ($this->configOptions['LoadKeys'] as $keyword => $ending){
-            $items = $this->getProducts($keyword,$ending);
+        $merchants = $this->getMerchants();
+        foreach ($this->configOptions['Keywords']['keyword'] as $key => $keyword){
+            foreach($merchants as $k => $v)
+                {
+                    $ending = empty($v['Merchant Id'])? "" : "merchantId={$v['Merchant Id']}";
+                    $items = $this->getProducts($keyword,$ending);
+                    $this->insertProducts($items);
+                }
+            $items = $this->getProducts($keyword);
             $this->insertProducts($items);
         }
         
@@ -55,6 +64,13 @@ class API {
             $this->db = new $this->configOptions['Settings']['DBClient']();
         }
         $this->db->insertItems($items, "ss_products","products");
+    }
+    
+    public function clearAllProducts() {
+        if (!$this->db) {
+            $this->db = new $this->configOptions['Settings']['DBClient']();
+        }
+        $this->db->removeAll( "ss_products","products");
     }
     
     public function getDBClient(){
@@ -72,7 +88,7 @@ class API {
     public function parseResponse($result) {
         $resArr = array();
         if ($result) {
-            $lines = explode("\n", $result);
+            $lines = explode("\n", trim($result));
             $head = str_getcsv(array_shift($lines), "|");
 
             foreach ($lines as $line) {

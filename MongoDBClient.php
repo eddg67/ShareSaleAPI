@@ -55,6 +55,12 @@ class MongoDBClient extends MongoClient implements IDB{
             $collection->insert($v);
         }
     }
+    
+    public function removeAll($db,$table) {
+        $db = $this->getDB($db);
+        $collection = $db->selectCollection($table);
+        $collection->remove();
+    }
 
   
 

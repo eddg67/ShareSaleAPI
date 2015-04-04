@@ -8,4 +8,5 @@
 
 include("./API.php");
 $api = new API();
+$api->clearAllProducts();
 $api->loadProducts();
