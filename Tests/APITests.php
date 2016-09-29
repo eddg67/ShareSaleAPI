@@ -5,12 +5,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-function my_autoloader($class)
+function my1_autoloader($class)
 {
     $filename =  '../' . str_replace('\\', '/', $class) . '.php';
     include($filename);
 }
-spl_autoload_register('my_autoloader');
+spl_autoload_register('my1_autoloader');
 /**
  * Description of APITests
  *
@@ -25,6 +25,14 @@ class APITests extends PHPUnit_Framework_TestCase{
          //print_r($results);
          
  
+    }
+    
+     public function testMerchantStatus(){
+         $api = new API();
+         //$response = $api->getMerchants();
+         
+         //$this->assertNotEmpty($response);
+   
     }
     
     public function testloadProducts(){
