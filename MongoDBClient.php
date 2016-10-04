@@ -50,7 +50,7 @@ class MongoDBClient extends MongoClient implements IDB {
 		}
 
 		foreach ($items as $k   => $v) {
-			$q = array('productId' => $v->productId);
+			$q = array('productId' => $v['productId']);
 			if (!$collection->findOne($q)) {
 				$collection->insert($v);
 			}
